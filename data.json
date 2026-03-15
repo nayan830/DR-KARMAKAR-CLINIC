@@ -1,0 +1,224 @@
+{
+  "site": {
+    "title": "Dr. Bappa Karmakar – Homeopathy Physician",
+    "logo": {
+      "icon": "fas fa-leaf",
+      "name_plain": "Dr ",
+      "name_highlight": "Bappa Karmakar"
+    },
+    "whatsapp_number": "916296680138",
+    "phone": "6296680138",
+    "email": "info@haringhomeohall.com",
+    "copyright": "© 2025 Haring Homeo Hall. All rights reserved.",
+    "copyright_sub": "Dr. Bappa Karmakar · Reg. No. A-2764 · D.B.M.S., C.B.I.M (W.B.)"
+  },
+
+  "social_links": [
+    { "icon": "fab fa-facebook-f",  "url": "#" },
+    { "icon": "fab fa-instagram",   "url": "#" },
+    { "icon": "fab fa-youtube",     "url": "#" },
+    { "icon": "fab fa-whatsapp",    "url": "https://wa.me/916296680138" }
+  ],
+
+  "nav": [
+    { "label": "Home",          "label_bn": "হোম",                   "href": "#" },
+    { "label": "Services",      "label_bn": "সেবাসমূহ",              "href": "#services" },
+    { "label": "Doctor",        "label_bn": "ডাক্তার",               "href": "#doctor-intro" },
+    { "label": "Clinic Status", "label_bn": "ক্লিনিক স্ট্যাটাস",    "href": "#clinic-status" },
+    { "label": "Blog",          "label_bn": "ব্লগ",                  "href": "#" },
+    { "label": "About Us",      "label_bn": "আমাদের সম্পর্কে",      "href": "#about" },
+    { "label": "Contact Us",    "label_bn": "যোগাযোগ",              "href": "#contact" }
+  ],
+
+  "notice_board": {
+    "ticker_speed_seconds": 8,
+    "notices": [
+      {
+        "tag": "NEW",
+        "tag_color": "#ef4444",
+        "text_en": "<strong>Fee Update:</strong> From <strong>January 1, 2026</strong>, consultation + medicine fee increased from <strong style=\"color:#b45309\">₹200</strong> to <strong style=\"color:#059669\">₹300</strong>. We apologise for any inconvenience.",
+        "text_bn": "<strong>ফি আপডেট:</strong> ১ জানুয়ারি ২০২৬ থেকে পরামর্শ ও ওষুধের ফি <strong style=\"color:#b45309\">₹২০০</strong> থেকে বেড়ে <strong style=\"color:#059669\">₹৩০০</strong> হয়েছে।"
+      },
+      {
+        "tag": "INFO",
+        "tag_color": "#f59e0b",
+        "text_en": "<strong>Clinic Holidays:</strong> 🪔 Kali Puja &nbsp;•&nbsp; 🌸 Durga Puja &nbsp;•&nbsp; 🎊 Poila Boishakh &nbsp;•&nbsp; 🌿 Holi &nbsp;•&nbsp; 📚 Saraswati Puja &nbsp;•&nbsp; 🎡 Rath Yatra &nbsp;•&nbsp; 🌙 Eid-ul-Fitr &nbsp;•&nbsp; 🌙 Eid-ul-Adha &nbsp;•&nbsp; 🎂 Janmashtami &nbsp;•&nbsp; 🎄 Christmas &nbsp;•&nbsp; 🎆 New Year's Day &nbsp;•&nbsp; 🇮🇳 Independence Day &nbsp;•&nbsp; 🇮🇳 Republic Day &nbsp;•&nbsp; 🕯️ Good Friday",
+        "text_bn": "<strong>ক্লিনিক ছুটির দিন:</strong> 🪔 কালী পূজা &nbsp;•&nbsp; 🌸 দুর্গা পূজা &nbsp;•&nbsp; 🎊 পহেলা বৈশাখ &nbsp;•&nbsp; 🌿 হোলি &nbsp;•&nbsp; 📚 সরস্বতী পূজা &nbsp;•&nbsp; 🎡 রথযাত্রা &nbsp;•&nbsp; 🌙 ঈদ-উল-ফিতর &nbsp;•&nbsp; 🌙 ঈদ-উল-আযহা &nbsp;•&nbsp; 🎂 জন্মাষ্টমী &nbsp;•&nbsp; 🎄 বড়দিন &nbsp;•&nbsp; 🎆 নববর্ষ &nbsp;•&nbsp; 🇮🇳 স্বাধীনতা দিবস &nbsp;•&nbsp; 🇮🇳 প্রজাতন্ত্র দিবস &nbsp;•&nbsp; 🕯️ গুড ফ্রাইডে"
+      }
+    ]
+  },
+
+  "hero": {
+    "doctor_image": {
+      "src": "https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?w=420&q=80&fit=crop&crop=top",
+      "alt": "Dr. Bappa Karmakar – Homeopathy Physician"
+    },
+    "badge_name": "Dr. Bappa Karmakar",
+    "badge_title": "Homeopathy Physician",
+    "badge_title_bn": "হোমিওপ্যাথি চিকিৎসক",
+    "experience_number": "15+",
+    "experience_label": "Years\nExperience",
+    "experience_label_bn": "বছরের\nঅভিজ্ঞতা"
+  },
+
+  "doctor": {
+    "name": "Dr. Bappa Karmakar",
+    "title": "Physician · Homeopathy Doctor",
+    "title_bn": "চিকিৎসক · হোমিওপ্যাথি ডাক্তার",
+    "qualifications": ["D.B.M.S.", "C.B.I.M (W.B.)", "Homeopathy Physician"],
+    "qualifications_bn": ["ডি.বি.এম.এস.", "সি.বি.আই.এম (ডব্লিউ.বি.)", "হোমিওপ্যাথি চিকিৎসক"],
+    "registration": "Registration No. A-2764",
+    "registration_bn": "নিবন্ধন নং A-2764",
+    "section_label": "DOCTOR INTRODUCTION",
+    "section_label_bn": "ডাক্তারের পরিচয়",
+    "heading_en": "Meet <span>Dr. Bappa Karmakar</span> — Your Healing Guide",
+    "heading_bn": "পরিচয় করুন <span>ডাঃ বাপ্পা কর্মকার</span> — আপনার সুস্থতার পথপ্রদর্শক",
+    "bio_en": "Dr. Bappa Karmakar is a dedicated Homeopathy Physician serving the communities of Ranaghat and surrounding areas of Nadia, West Bengal. With over <strong>15 years</strong> of hands-on experience, he has helped thousands of patients recover naturally using constitutional homeopathic treatment — addressing root causes, not just symptoms.",
+    "bio_bn": "ডাঃ বাপ্পা কর্মকার রানাঘাট ও নদিয়া জেলার আশেপাশের এলাকার মানুষদের সেবায় নিবেদিত একজন হোমিওপ্যাথি চিকিৎসক। <strong>১৫ বছরেরও বেশি</strong> হাতে-কলমে অভিজ্ঞতায় তিনি হাজার হাজার রোগীকে সাংবিধানিক হোমিওপ্যাথিক চিকিৎসায় সুস্থ করে তুলেছেন — শুধু উপসর্গ নয়, মূল কারণ নির্মূল করে।",
+    "bio2_en": "His warm, patient-first approach and deep knowledge of classical homeopathy have earned him the trust of families across generations. Whether chronic disease, skin conditions, children's health or general wellness — Dr. Karmakar provides personalised care in a welcoming environment.",
+    "bio2_bn": "তাঁর উষ্ণ, রোগীকেন্দ্রিক দৃষ্টিভঙ্গি এবং ক্লাসিক্যাল হোমিওপ্যাথিতে গভীর জ্ঞান প্রজন্মের পর প্রজন্ম ধরে পরিবারগুলোর বিশ্বাস অর্জন করেছে। দীর্ঘমেয়াদী রোগ, চর্মরোগ, শিশুস্বাস্থ্য বা সাধারণ সুস্থতা — ডাঃ কর্মকার একটি সুহৃদ পরিবেশে ব্যক্তিগতকৃত চিকিৎসা প্রদান করেন।"
+  },
+
+  "clinics": [
+    {
+      "key": "haring",
+      "name": "Haring Homeo Hall",
+      "name_bn": "হারিং হোমিও হল",
+      "subtitle": "Clinic & Study Centre",
+      "subtitle_bn": "ক্লিনিক ও স্টাডি সেন্টার",
+      "icon": "fas fa-clinic-medical",
+      "address": "Joghpur Road, Loknath Nagar, Anulia, Ranaghat, Nadia",
+      "address_note": "(After Anulia Hospital gate, beside the ice cream factory)",
+      "phone": "6296680138",
+      "schedule": {
+        "1": [{"open": "11:00", "close": "14:00"}, {"open": "17:00", "close": "20:00"}],
+        "3": [{"open": "11:00", "close": "14:00"}, {"open": "17:00", "close": "20:00"}],
+        "6": [{"open": "11:00", "close": "14:00"}, {"open": "17:00", "close": "20:00"}]
+      },
+      "schedule_display": "Mon / Wed / Sat: 11AM–2PM & 5PM–8PM",
+      "schedule_display_bn": "সোম / বুধ / শনি: সকাল ১১টা–দুপুর ২টা এবং বিকাল ৫টা–রাত ৮টা"
+    },
+    {
+      "key": "ontora",
+      "name": "Ontora Homeo Hall",
+      "name_bn": "অন্তরা হোমিও হল",
+      "subtitle": "Branch Clinic",
+      "subtitle_bn": "শাখা ক্লিনিক",
+      "icon": "fas fa-map-marker-alt",
+      "address": "East side of Eruli Baganbari Mor (Dinuda's House)",
+      "address_note": "",
+      "phone": "6296680138",
+      "schedule": {
+        "2": [{"open": "11:00", "close": "16:00"}],
+        "0": [{"open": "11:00", "close": "19:00"}]
+      },
+      "schedule_display": "Tue: 11AM–4PM  |  Sun: 11AM–7PM",
+      "schedule_display_bn": "মঙ্গল: সকাল ১১টা–বিকাল ৪টা  |  রবি: সকাল ১১টা–সন্ধ্যা ৭টা"
+    }
+  ],
+
+  "about": {
+    "section_label": "ABOUT US",
+    "section_label_bn": "আমাদের সম্পর্কে",
+    "image": {
+      "src": "https://images.unsplash.com/photo-1559839734-2b71ea197ec2?w=520&q=80&fit=crop&crop=top",
+      "alt": "Dr. Bappa Karmakar with patient"
+    },
+    "stat_number": "15+",
+    "stat_label": "Years of Expertise",
+    "stat_label_bn": "বছরের অভিজ্ঞতা",
+    "heading_highlight": "15 Years",
+    "heading_highlight_bn": "১৫ বছর",
+    "heading_rest": "of Expertise in Homeopathic Care",
+    "heading_rest_bn": "হোমিওপ্যাথিক সেবায় অভিজ্ঞতা",
+    "description_en": "Dr. Bappa Karmakar (D.B.M.S., C.B.I.M W.B., Reg. No. A-2764) operates two well-established homeopathy clinics in Nadia, West Bengal, providing compassionate and science-backed natural medicine for patients of all ages.",
+    "description_bn": "ডাঃ বাপ্পা কর্মকার (ডি.বি.এম.এস., সি.বি.আই.এম ডব্লিউ.বি., নিবন্ধন নং A-2764) নদিয়া, পশ্চিমবঙ্গে দুটি প্রতিষ্ঠিত হোমিওপ্যাথি ক্লিনিক পরিচালনা করেন। তিনি সকল বয়সের রোগীদের জন্য বৈজ্ঞানিক ও প্রাকৃতিক চিকিৎসা প্রদান করেন।",
+    "bullets": [
+      {"en": "Advanced Homeopathy You Can Trust",  "bn": "বিশ্বাসযোগ্য উন্নত হোমিওপ্যাথি"},
+      {"en": "Registered & Certified Physician",   "bn": "নিবন্ধিত ও প্রত্যয়িত চিকিৎসক"},
+      {"en": "Dedicated, Compassionate Care",      "bn": "নিবেদিত ও সহানুভূতিশীল সেবা"}
+    ],
+    "btn_en": "Learn More",
+    "btn_bn": "আরও জানুন"
+  },
+
+  "services_strip": [
+    {"icon": "fas fa-stethoscope", "label_en": "General Homeopathy",    "label_bn": "সাধারণ হোমিওপ্যাথি"},
+    {"icon": "fas fa-allergies",   "label_en": "Skin & Allergy Care",   "label_bn": "ত্বক ও অ্যালার্জি চিকিৎসা"},
+    {"icon": "fas fa-child",       "label_en": "Paediatric Treatment",  "label_bn": "শিশু চিকিৎসা"},
+    {"icon": "fas fa-heartbeat",   "label_en": "Chronic Disease Care",  "label_bn": "দীর্ঘমেয়াদী রোগের চিকিৎসা"}
+  ],
+
+  "services": {
+    "section_label": "OUR SERVICES",
+    "section_label_bn": "আমাদের সেবা",
+    "heading_en": "A Wide Range of Services for Your <span>Best Health</span>",
+    "heading_bn": "আপনার সুস্থতার জন্য বিস্তৃত <span>সেবাসমূহ</span>",
+    "explore_btn_en": "Explore All Services",
+    "explore_btn_bn": "সব সেবা দেখুন",
+    "cards": [
+      {
+        "image": "https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?w=500&q=80&fit=crop",
+        "alt": "General Homeopathy",
+        "icon": "fas fa-stethoscope",
+        "title_en": "General Homeopathy",
+        "title_bn": "সাধারণ হোমিওপ্যাথি",
+        "desc_en": "Personalised constitutional treatment for common illnesses, infections, digestive issues and overall wellbeing.",
+        "desc_bn": "সাধারণ অসুস্থতা, সংক্রমণ, হজমের সমস্যা ও সামগ্রিক স্বাস্থ্যের জন্য ব্যক্তিগতকৃত চিকিৎসা।"
+      },
+      {
+        "image": "https://images.unsplash.com/photo-1576091160550-2173dba999ef?w=500&q=80&fit=crop",
+        "alt": "Chronic Disease",
+        "icon": "fas fa-heartbeat",
+        "title_en": "Chronic Disease Treatment",
+        "title_bn": "দীর্ঘমেয়াদী রোগের চিকিৎসা",
+        "desc_en": "Long-term management of diabetes, arthritis, hypertension, asthma and other chronic conditions using gentle remedies.",
+        "desc_bn": "ডায়াবেটিস, বাত, উচ্চ রক্তচাপ, হাঁপানি ও অন্যান্য দীর্ঘমেয়াদী রোগের কোমল হোমিওপ্যাথিক ব্যবস্থাপনা।"
+      },
+      {
+        "image": "https://images.unsplash.com/photo-1551601651-2a8555f1a136?w=500&q=80&fit=crop",
+        "alt": "Skin & Allergy",
+        "icon": "fas fa-allergies",
+        "title_en": "Skin & Allergy Care",
+        "title_bn": "ত্বক ও অ্যালার্জি চিকিৎসা",
+        "desc_en": "Effective treatment for eczema, psoriasis, urticaria, allergic rhinitis and other skin conditions.",
+        "desc_bn": "একজিমা, সোরিয়াসিস, আমবাত, অ্যালার্জিক রাইনাইটিস ও অন্যান্য ত্বকের রোগের কার্যকর চিকিৎসা।"
+      },
+      {
+        "image": "https://images.unsplash.com/photo-1631815589968-fdb09a223b1e?w=500&q=80&fit=crop",
+        "alt": "Paediatric Treatment",
+        "icon": "fas fa-child",
+        "title_en": "Paediatric Treatment",
+        "title_bn": "শিশু চিকিৎসা",
+        "desc_en": "Gentle homeopathic care for infants and children — fever, cough, digestive issues, growth problems and more.",
+        "desc_bn": "শিশু ও নবজাতকদের জন্য কোমল হোমিওপ্যাথিক সেবা — জ্বর, কাশি, হজমের সমস্যা, বৃদ্ধিজনিত সমস্যা ইত্যাদি।"
+      }
+    ]
+  },
+
+  "stats": [
+    {"number": "15+",   "label_en": "Years of Experience", "label_bn": "বছরের অভিজ্ঞতা"},
+    {"number": "5000+", "label_en": "Happy Patients",      "label_bn": "সন্তুষ্ট রোগী"},
+    {"number": "2",     "label_en": "Clinic Locations",    "label_bn": "ক্লিনিকের শাখা"},
+    {"number": "98%",   "label_en": "Patient Satisfaction","label_bn": "রোগী সন্তুষ্টি"}
+  ],
+
+  "footer": {
+    "description_en": "Haring Homeo Hall provides expert homeopathic care under Dr. Bappa Karmakar — trusted, natural healing for the entire family in Ranaghat, Nadia.",
+    "description_bn": "হারিং হোমিও হল ডাঃ বাপ্পা কর্মকারের তত্ত্বাবধানে বিশেষজ্ঞ হোমিওপ্যাথিক সেবা প্রদান করে — রানাঘাট, নদিয়ায় পুরো পরিবারের জন্য বিশ্বস্ত, প্রাকৃতিক নিরাময়।",
+    "quick_links": [
+      {"label_en": "Home",       "label_bn": "হোম",                 "href": "#"},
+      {"label_en": "Services",   "label_bn": "সেবাসমূহ",            "href": "#services"},
+      {"label_en": "Doctor",     "label_bn": "ডাক্তার",             "href": "#doctor-intro"},
+      {"label_en": "About Us",   "label_bn": "আমাদের সম্পর্কে",    "href": "#about"},
+      {"label_en": "Contact Us", "label_bn": "যোগাযোগ",            "href": "#contact"}
+    ],
+    "service_links": [
+      {"label_en": "General Homeopathy",    "label_bn": "সাধারণ হোমিওপ্যাথি"},
+      {"label_en": "Chronic Disease Care",  "label_bn": "দীর্ঘমেয়াদী রোগের চিকিৎসা"},
+      {"label_en": "Skin & Allergy",        "label_bn": "ত্বক ও অ্যালার্জি"},
+      {"label_en": "Paediatric Treatment",  "label_bn": "শিশু চিকিৎসা"},
+      {"label_en": "Women's Health",        "label_bn": "মহিলাদের স্বাস্থ্য"}
+    ]
+  }
+}
