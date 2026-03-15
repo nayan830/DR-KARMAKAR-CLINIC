@@ -1,0 +1,1602 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title id="pageTitle">Loading…</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=DM+Sans:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+<style>
+/* ══════════════════════════════════════════
+   RESET & BASE
+══════════════════════════════════════════ */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  font-family:'DM Sans',sans-serif;
+  color:#1a1a2e;background:#fff;overflow-x:hidden;
+  /* 🩺 Stethoscope cursor — desktop */
+  cursor:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='48' height='48' viewBox='0 0 48 48'%3E%3Ctext y='40' font-size='38'%3E%F0%9F%A9%BA%3C/text%3E%3C/svg%3E") 8 8, auto;
+}
+img{display:block;max-width:100%}
+a{text-decoration:none;color:inherit}
+ul{list-style:none}
+button,select,input{
+  cursor:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='48' height='48' viewBox='0 0 48 48'%3E%3Ctext y='40' font-size='38'%3E%F0%9F%A9%BA%3C/text%3E%3C/svg%3E") 8 8, pointer;
+}
+a{
+  cursor:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='48' height='48' viewBox='0 0 48 48'%3E%3Ctext y='40' font-size='38'%3E%F0%9F%A9%BA%3C/text%3E%3C/svg%3E") 8 8, pointer;
+}
+
+/* ══════════════════════════════════════════
+   CSS VARIABLES
+══════════════════════════════════════════ */
+:root{
+  --blue:#2F5BFF;--blue-dark:#1a42e8;--blue-light:#e8eeff;--blue-pale:#f0f4ff;
+  --green:#10b981;--red:#ef4444;--amber:#f59e0b;
+  --text:#1a1a2e;--muted:#6b7280;--border:#e5e8ef;
+  --white:#fff;--section-bg:#f7f9ff;
+  --radius:14px;--radius-lg:22px;
+  --shadow:0 4px 28px rgba(47,91,255,.10);
+  --shadow-md:0 8px 40px rgba(47,91,255,.15);
+}
+
+/* ══════════════════════════════════════════
+   🩺 MOBILE TOUCH CURSOR (stethoscope)
+══════════════════════════════════════════ */
+#touch-cursor{
+  position:fixed;
+  pointer-events:none;
+  font-size:42px;
+  line-height:1;
+  z-index:99999;
+  opacity:0;
+  /* smooth lerp handled in JS via transition */
+  transition:opacity .25s ease;
+  transform:translate(-50%,-50%);
+  will-change:transform,left,top;
+  /* drop shadow for depth */
+  filter:drop-shadow(0 4px 8px rgba(47,91,255,.35));
+}
+
+/* ══════════════════════════════════════════
+   🌿 BACKGROUND EMOJI FLOAT ANIMATION
+══════════════════════════════════════════ */
+.bg-emojis{
+  position:fixed;inset:0;
+  pointer-events:none;z-index:0;overflow:hidden;
+}
+.bg-emoji{
+  position:absolute;
+  font-size:2.6rem;
+  opacity:0;
+  animation:floatUp var(--dur,18s) var(--delay,0s) ease-in-out infinite;
+  user-select:none;
+  filter:grayscale(10%);
+}
+@keyframes floatUp{
+  0%  {opacity:0;  transform:translateY(110vh) rotate(0deg)   scale(.85)}
+  8%  {opacity:.9}
+  50% {opacity:.9}
+  88% {opacity:.9}
+  96% {opacity:0;  transform:translateY(-14vh) rotate(18deg)  scale(1.1)}
+  100%{opacity:0;  transform:translateY(-16vh) rotate(20deg)  scale(1.1)}
+}
+
+/* ══════════════════════════════════════════
+   1. NOTICE BOARD — animated ticker
+══════════════════════════════════════════ */
+.notice-board{
+  background:#fff;
+  border-bottom:2px solid #e5e8ef;
+  border-left:5px solid #ef4444;
+  width:100%;
+  box-sizing:border-box;
+  overflow:hidden;       /* clip the scrolling text */
+  position:relative;
+  z-index:10;
+}
+.notice-ticker-wrap{
+  display:flex;
+  align-items:center;
+  height:44px;
+  width:100%;
+  overflow:hidden;
+  position:relative;
+}
+/* "NOTICE" red label on left — fixed, doesn't scroll */
+.notice-ticker-label{
+  display:flex;align-items:center;gap:7px;
+  background:#ef4444;color:#fff;
+  font-family:'Plus Jakarta Sans',sans-serif;
+  font-weight:800;font-size:.72rem;letter-spacing:.08em;
+  text-transform:uppercase;
+  padding:0 18px;height:100%;
+  flex-shrink:0;white-space:nowrap;
+  z-index:2;
+  /* subtle shadow to separate from scrolling text */
+  box-shadow:4px 0 10px rgba(239,68,68,.25);
+}
+.notice-ticker-label i{font-size:1rem}
+
+/* scrolling track */
+.notice-ticker-track{
+  flex:1;overflow:hidden;position:relative;
+}
+/* gradient fade edges */
+.notice-ticker-track::before,
+.notice-ticker-track::after{
+  content:'';position:absolute;top:0;bottom:0;width:40px;z-index:1;pointer-events:none;
+}
+.notice-ticker-track::before{left:0;background:linear-gradient(to right,#fff 60%,transparent)}
+.notice-ticker-track::after {right:0;background:linear-gradient(to left,#fff 60%,transparent)}
+
+/* the inner element that moves */
+.notice-ticker-inner{
+  display:flex;align-items:center;
+  white-space:nowrap;
+  animation:ticker 8s linear infinite;
+  will-change:transform;
+}
+.notice-ticker-inner:hover{animation-play-state:paused}
+@keyframes ticker{
+  0%  {transform:translateX(0)}
+  100%{transform:translateX(-50%)} /* -50% because content is doubled */
+}
+
+.ticker-item{
+  display:inline-flex;align-items:center;gap:10px;
+  padding:0 48px;
+  font-family:'DM Sans',sans-serif;
+  font-size:.87rem;color:#374151;
+}
+.ticker-dot{
+  display:inline-block;
+  width:6px;height:6px;border-radius:50%;
+  background:#ef4444;flex-shrink:0;
+}
+.ticker-badge{
+  display:inline-flex;align-items:center;gap:4px;
+  background:#ef4444;color:#fff;
+  font-family:'Plus Jakarta Sans',sans-serif;
+  font-size:.62rem;font-weight:700;letter-spacing:.05em;
+  padding:2px 8px;border-radius:50px;flex-shrink:0;
+  animation:blink 2s ease-in-out infinite;
+}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.65}}
+.ticker-sep{
+  color:#d1d5db;font-size:1.1rem;
+  padding:0 12px;
+}
+
+/* ── Red circle ✕ close button ── */
+.notice-close{
+  flex-shrink:0;width:30px;height:30px;border-radius:50%;
+  background:#ef4444;border:none;
+  display:flex;align-items:center;justify-content:center;
+  color:#fff;font-size:.78rem;
+  margin:0 12px;transition:background .2s,transform .15s;
+}
+.notice-close:hover{background:#dc2626;transform:scale(1.1)}
+
+/* ══════════════════════════════════════════
+   HEADER  (no top-bar, sticky)
+══════════════════════════════════════════ */
+header{
+  position:sticky;top:0;z-index:200;
+  background:#fff;
+  box-shadow:0 2px 16px rgba(47,91,255,.08);
+  padding:0 5%;
+}
+.header-inner{
+  display:flex;align-items:center;justify-content:space-between;
+  height:70px;max-width:1400px;margin:0 auto;gap:16px;
+}
+.logo{
+  display:flex;align-items:center;gap:10px;
+  font-family:'Plus Jakarta Sans',sans-serif;
+  font-weight:800;font-size:1.35rem;color:var(--text);flex-shrink:0;
+}
+.logo-icon{
+  width:40px;height:40px;background:var(--blue);border-radius:10px;
+  display:flex;align-items:center;justify-content:center;
+  color:#fff;font-size:1rem;
+}
+.logo .blue{color:var(--blue)}
+
+/* Desktop nav */
+nav.desktop-nav{display:flex;align-items:center;gap:22px}
+nav.desktop-nav a{
+  font-family:'Plus Jakarta Sans',sans-serif;
+  font-weight:500;font-size:.84rem;color:var(--muted);
+  position:relative;transition:color .2s;white-space:nowrap;
+}
+nav.desktop-nav a:hover,nav.desktop-nav a.active{color:var(--blue)}
+nav.desktop-nav a.active::after{
+  content:'';position:absolute;bottom:-4px;left:0;right:0;
+  height:2px;background:var(--blue);border-radius:2px;
+}
+.header-right{display:flex;align-items:center;gap:10px}
+.btn-book-header{
+  background:var(--blue);color:#fff;
+  padding:10px 22px;border-radius:50px;
+  font-family:'Plus Jakarta Sans',sans-serif;
+  font-weight:600;font-size:.86rem;
+  border:none;transition:background .2s,transform .15s;white-space:nowrap;
+}
+.btn-book-header:hover{background:var(--blue-dark);transform:translateY(-1px)}
+
+/* ── HAMBURGER button (three lines) ── */
+.hamburger-btn{
+  display:none;
+  flex-direction:column;align-items:center;justify-content:center;
+  gap:5px;width:42px;height:42px;
+  background:var(--blue-light);border:none;border-radius:10px;
+  padding:0;transition:background .2s;flex-shrink:0;
+}
+.hamburger-btn:hover{background:var(--blue-light)}
+.hamburger-btn .bar{
+  display:block;width:20px;height:2.5px;
+  background:var(--blue);border-radius:2px;
+  transition:transform .3s,opacity .3s;
+}
+/* animated X when open */
+.hamburger-btn.open .bar:nth-child(1){transform:translateY(7.5px) rotate(45deg)}
+.hamburger-btn.open .bar:nth-child(2){opacity:0}
+.hamburger-btn.open .bar:nth-child(3){transform:translateY(-7.5px) rotate(-45deg)}
+
+/* ── Mobile full-screen drawer ── */
+.mobile-drawer{
+  display:none;
+  position:fixed;top:0;right:0;bottom:0;
+  width:285px;background:#fff;z-index:999;
+  box-shadow:-8px 0 40px rgba(0,0,0,.18);
+  flex-direction:column;padding:24px 22px;gap:4px;
+  transform:translateX(105%);transition:transform .32s cubic-bezier(.4,0,.2,1);
+}
+.mobile-drawer.open{transform:translateX(0)}
+.drawer-header{
+  display:flex;align-items:center;justify-content:space-between;
+  margin-bottom:22px;
+}
+.drawer-close{
+  width:36px;height:36px;border-radius:50%;
+  background:var(--blue-light);border:none;
+  display:flex;align-items:center;justify-content:center;
+  color:var(--blue);font-size:.95rem;transition:background .2s;
+}
+.drawer-close:hover{background:var(--blue);color:#fff}
+.mobile-drawer a{
+  display:flex;align-items:center;gap:12px;
+  padding:13px 16px;border-radius:12px;
+  font-family:'Plus Jakarta Sans',sans-serif;
+  font-weight:600;font-size:.95rem;color:var(--text);
+  transition:background .2s,color .2s;
+}
+.mobile-drawer a:hover{background:var(--blue-light);color:var(--blue)}
+.mobile-drawer a i{width:20px;text-align:center;color:var(--blue);font-size:.9rem}
+.drawer-wa-btn{
+  display:flex;align-items:center;justify-content:center;gap:9px;
+  background:#25d366;color:#fff;border:none;
+  padding:14px 20px;border-radius:12px;
+  font-family:'Plus Jakarta Sans',sans-serif;
+  font-weight:700;font-size:.95rem;
+  margin-top:12px;transition:background .2s;
+}
+.drawer-wa-btn:hover{background:#1ab857}
+.drawer-book-btn{
+  display:flex;align-items:center;justify-content:center;gap:9px;
+  background:var(--blue);color:#fff;border:none;
+  padding:14px 20px;border-radius:12px;
+  font-family:'Plus Jakarta Sans',sans-serif;
+  font-weight:700;font-size:.95rem;
+  margin-top:6px;transition:background .2s;
+}
+.drawer-book-btn:hover{background:var(--blue-dark)}
+
+/* Overlay for drawer */
+.drawer-overlay{
+  display:none;position:fixed;inset:0;
+  background:rgba(0,0,0,.45);z-index:998;
+}
+.drawer-overlay.open{display:block}
+
+/* ══════════════════════════════════════════
+   🇧🇩 LANGUAGE TOGGLE BUTTON
+   Always visible in header — desktop & mobile
+══════════════════════════════════════════ */
+.lang-toggle{
+  display:flex;align-items:center;gap:6px;
+  background:transparent;
+  border:2px solid var(--blue);
+  color:var(--blue);
+  padding:7px 14px;border-radius:50px;
+  font-family:'Plus Jakarta Sans',sans-serif;
+  font-weight:700;font-size:.82rem;
+  white-space:nowrap;
+  transition:background .2s,color .2s,transform .15s;
+  flex-shrink:0;
+}
+.lang-toggle:hover{
+  background:var(--blue);color:#fff;transform:translateY(-1px);
+}
+.lang-toggle .lang-flag{font-size:1rem;line-height:1}
+.lang-toggle .lang-label{letter-spacing:.02em}
+
+/* on mobile keep it always visible — never hide */
+@media(max-width:768px){
+  .lang-toggle{
+    padding:6px 11px;font-size:.78rem;
+  }
+  .btn-book-header{display:none}
+}
+
+/* ══════════════════════════════════════════
+   BOOK NOW MODAL
+══════════════════════════════════════════ */
+.modal-overlay{
+  display:none;position:fixed;inset:0;
+  background:rgba(0,0,0,.5);z-index:1000;
+  align-items:center;justify-content:center;padding:20px;
+}
+.modal-overlay.open{display:flex}
+.modal-box{
+  background:#fff;border-radius:24px;padding:36px;
+  max-width:460px;width:100%;
+  box-shadow:0 20px 60px rgba(0,0,0,.2);
+  position:relative;animation:fadeUp .3s ease;
+}
+@keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+.modal-close-btn{
+  position:absolute;top:18px;right:18px;
+  background:var(--blue-light);border:none;
+  width:34px;height:34px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  color:var(--blue);font-size:.9rem;transition:background .2s;
+}
+.modal-close-btn:hover{background:var(--blue);color:#fff}
+.modal-title{
+  font-family:'Plus Jakarta Sans',sans-serif;
+  font-size:1.4rem;font-weight:800;color:var(--text);margin-bottom:5px;
+}
+.modal-sub{font-size:.85rem;color:var(--muted);margin-bottom:22px}
+.form-group{margin-bottom:15px}
+.form-group label{
+  display:block;
+  font-family:'Plus Jakarta Sans',sans-serif;
+  font-size:.77rem;font-weight:700;color:var(--text);
+  text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px;
+}
+.form-group input,.form-group select{
+  width:100%;padding:12px 16px;
+  border:2px solid var(--border);border-radius:var(--radius);
+  font-family:'DM Sans',sans-serif;font-size:.9rem;color:var(--text);
+  outline:none;transition:border-color .2s,box-shadow .2s;background:#fff;
+}
+.form-group input:focus,.form-group select:focus{
+  border-color:var(--blue);box-shadow:0 0 0 4px rgba(47,91,255,.1);
+}
+.btn-submit{
+  width:100%;padding:14px;border-radius:50px;
+  background:var(--blue);color:#fff;border:none;
+  font-family:'Plus Jakarta Sans',sans-serif;
+  font-weight:700;font-size:.95rem;
+  transition:background .2s,transform .15s;
+  box-shadow:0 6px 20px rgba(47,91,255,.35);margin-top:4px;
+}
+.btn-submit:hover{background:var(--blue-dark);transform:translateY(-1px)}
+.wa-link{
+  display:flex;align-items:center;justify-content:center;gap:10px;
+  margin-top:14px;padding:13px;border-radius:50px;
+  background:#e8f5e9;color:#1b7a3e;
+  font-family:'Plus Jakarta Sans',sans-serif;
+  font-weight:700;font-size:.9rem;
+  border:2px solid #4caf50;transition:background .2s,transform .15s;
+}
+.wa-link:hover{background:#c8e6c9;transform:translateY(-1px)}
+.wa-link i{font-size:1.1rem;color:#25d366}
+
+/* ══════════════════════════════════════════
+   LIVE CLINIC STATUS WIDGET  (top of page)
+══════════════════════════════════════════ */
+.clinic-widget{
+  background:linear-gradient(135deg,#0f2460 0%,#1a3a8f 50%,#2F5BFF 100%);
+  padding:22px 5%;
+  position:relative;z-index:10;
+  overflow:hidden;
+}
+.clinic-widget::before{
+  content:'';
+  position:absolute;inset:0;
+  background:url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+  pointer-events:none;
+}
+.clinic-widget-inner{
+  max-width:1400px;margin:0 auto;
+  display:grid;
+  grid-template-columns:auto 1fr auto;
+  gap:0;align-items:center;
+}
+
+/* Left: TODAY label */
+.cw-today-col{
+  display:flex;flex-direction:column;align-items:center;
+  padding-right:24px;border-right:1px solid rgba(255,255,255,.2);
+  margin-right:24px;flex-shrink:0;
+}
+.cw-today-label{
+  font-family:'Plus Jakarta Sans',sans-serif;
+  font-size:.65rem;font-weight:700;letter-spacing:.12em;
+  text-transform:uppercase;color:rgba(255,255,255,.6);margin-bottom:4px;
+}
+.cw-today-day{
+  font-family:'Plus Jakarta Sans',sans-serif;
+  font-size:1.6rem;font-weight:800;color:#fff;line-height:1;
+}
+.cw-today-date{
+  font-family:'DM Sans',sans-serif;
+  font-size:.78rem;color:rgba(255,255,255,.65);margin-top:3px;
+}
+
+/* Centre: clinic info */
+.cw-main{
+  display:flex;flex-direction:column;gap:10px;
+}
+.cw-clinic-row{
+  display:flex;align-items:flex-start;gap:16px;flex-wrap:wrap;
+}
+.cw-clinic-block{
+  display:flex;flex-direction:column;gap:4px;
+  min-width:260px;
+}
+.cw-clinic-name{
+  font-family:'Plus Jakarta Sans',sans-serif;
+  font-size:1.05rem;font-weight:800;color:#fff;
+  display:flex;align-items:center;gap:9px;
+}
+.cw-open-badge{
+  display:inline-flex;align-items:center;gap:5px;
+  background:#10b981;color:#fff;
+  font-family:'Plus Jakarta Sans',sans-serif;
+  font-size:.66rem;font-weight:700;letter-spacing:.06em;
+  padding:3px 10px;border-radius:50px;flex-shrink:0;
+}
+.cw-closed-badge{
+  display:inline-flex;align-items:center;gap:5px;
+  background:rgba(255,255,255,.18);color:rgba(255,255,255,.75);
+  font-family:'Plus Jakarta Sans',sans-serif;
+  font-size:.66rem;font-weight:700;letter-spacing:.06em;
+  padding:3px 10px;border-radius:50px;flex-shrink:0;
+}
+.pulse-dot{
+  width:7px;height:7px;border-radius:50%;
+  background:#fff;flex-shrink:0;
+  animation:pulseDot 1.6s ease-in-out infinite;
+}
+@keyframes pulseDot{
+  0%,100%{opacity:1;transform:scale(1)}
+  50%{opacity:.5;transform:scale(1.5)}
+}
+.cw-slots{
+  display:flex;align-items:center;gap:8px;flex-wrap:wrap;
+}
+.cw-slot{
+  display:inline-flex;align-items:center;gap:5px;
+  background:rgba(255,255,255,.14);
+  border:1px solid rgba(255,255,255,.2);
+  color:#fff;border-radius:8px;
+  font-family:'Plus Jakarta Sans',sans-serif;
+  font-size:.78rem;font-weight:600;
+  padding:4px 12px;
+}
+.cw-slot i{font-size:.75rem;opacity:.8}
+.cw-slot.active-slot{
+  background:rgba(16,185,129,.35);
+  border-color:#10b981;
+}
+.cw-closed-label{
+  font-family:'DM Sans',sans-serif;
+  font-size:.85rem;color:rgba(255,255,255,.55);
+  font-style:italic;
+}
+.cw-divider{
+  width:1px;height:50px;
+  background:rgba(255,255,255,.18);
+  align-self:center;margin:0 8px;
+}
+.cw-days-row{
+  display:flex;align-items:center;gap:6px;flex-wrap:wrap;
+}
+.cw-days-label{
+  font-family:'Plus Jakarta Sans',sans-serif;
+  font-size:.68rem;font-weight:700;letter-spacing:.08em;
+  text-transform:uppercase;color:rgba(255,255,255,.55);
+  margin-right:4px;
+}
+.cw-day-pill{
+  font-family:'Plus Jakarta Sans',sans-serif;
+  font-size:.72rem;font-weight:700;
+  padding:2px 10px;border-radius:50px;
+  background:rgba(255,255,255,.1);color:rgba(255,255,255,.6);
+  border:1px solid rgba(255,255,255,.15);
+}
+.cw-day-pill.today{
+  background:#2F5BFF;color:#fff;
+  border-color:#5b87ff;
+  box-shadow:0 0 0 3px rgba(47,91,255,.35);
+}
+
+/* Right: live clock */
+.cw-clock-col{
+  display:flex;flex-direction:column;align-items:flex-end;
+  padding-left:24px;border-left:1px solid rgba(255,255,255,.2);
+  margin-left:24px;flex-shrink:0;
+}
+.cw-clock{
+  font-family:'Plus Jakarta Sans',sans-serif;
+  font-size:1.8rem;font-weight:800;color:#fff;
+  letter-spacing:.04em;line-height:1;
+}
+.cw-clock-sub{
+  font-family:'DM Sans',sans-serif;
+  font-size:.75rem;color:rgba(255,255,255,.55);
+  margin-top:4px;text-align:right;
+}
+.cw-next-hint{
+  margin-top:8px;
+  font-family:'Plus Jakarta Sans',sans-serif;
+  font-size:.72rem;color:rgba(255,255,255,.6);
+  text-align:right;
+}
+.cw-next-hint strong{color:#93c5fd}
+
+/* ══════════════════════════════════════════
+   HERO  — doctor image + overlays only
+   (no text content beside it)
+══════════════════════════════════════════ */
+.hero{
+  background:var(--section-bg);
+  padding:60px 5%;
+  display:flex;align-items:center;justify-content:center;
+  position:relative;overflow:hidden;
+}
+.hero::before{
+  content:'';position:absolute;inset:0;
+  background:radial-gradient(ellipse at 60% 40%,rgba(47,91,255,.07) 0%,transparent 65%);
+  pointer-events:none;
+}
+.hero-img-wrap{
+  position:relative;
+  display:flex;align-items:center;justify-content:center;
+}
+.hero-circle{
+  width:380px;height:380px;border-radius:50%;
+  background:linear-gradient(135deg,var(--blue) 0%,#6b98ff 100%);
+  position:relative;overflow:hidden;flex-shrink:0;
+}
+.hero-circle img{
+  position:absolute;bottom:0;left:50%;transform:translateX(-50%);
+  width:105%;height:auto;object-fit:cover;
+}
+
+/* Name badge — right side of circle */
+.hero-name-badge{
+  position:absolute;top:32px;right:-36px;
+  background:#fff;border-radius:var(--radius);
+  padding:14px 18px;box-shadow:var(--shadow-md);
+  font-family:'Plus Jakarta Sans',sans-serif;
+  display:flex;align-items:center;gap:12px;z-index:2;
+  animation:float 3s ease-in-out infinite;
+}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-7px)}}
+.badge-icon-circle{
+  width:44px;height:44px;border-radius:12px;
+  background:var(--blue-light);color:var(--blue);
+  display:flex;align-items:center;justify-content:center;
+  font-size:1.15rem;flex-shrink:0;
+}
+.badge-txt strong{display:block;font-size:.9rem;font-weight:800;color:var(--text)}
+.badge-txt span{font-size:.74rem;color:var(--muted)}
+
+/* Experience badge — left/bottom */
+.hero-exp-badge{
+  position:absolute;bottom:28px;left:-28px;
+  background:var(--blue);color:#fff;
+  border-radius:var(--radius);padding:14px 18px;
+  font-family:'Plus Jakarta Sans',sans-serif;text-align:center;
+  box-shadow:var(--shadow-md);z-index:2;
+  animation:float 3.5s 1s ease-in-out infinite;
+}
+.hero-exp-badge .num{font-size:2rem;font-weight:800;line-height:1}
+.hero-exp-badge .lbl{font-size:.72rem;opacity:.88;margin-top:3px}
+
+/* ══════════════════════════════════════════
+   DOCTOR INTRODUCTION
+══════════════════════════════════════════ */
+.doctor-intro{
+  background:#fff;padding:60px 5%;
+  display:grid;grid-template-columns:1fr 1fr;
+  gap:56px;align-items:start;
+}
+.section-label{
+  display:inline-flex;align-items:center;gap:8px;
+  color:var(--blue);font-family:'Plus Jakarta Sans',sans-serif;
+  font-size:.77rem;font-weight:700;letter-spacing:.1em;
+  text-transform:uppercase;margin-bottom:14px;
+}
+.section-label::before{content:'';width:24px;height:3px;background:var(--blue);border-radius:2px}
+.doctor-intro-left h2{
+  font-family:'Plus Jakarta Sans',sans-serif;
+  font-size:clamp(1.6rem,2.4vw,2.2rem);font-weight:800;
+  line-height:1.22;color:var(--text);margin-bottom:16px;
+}
+.doctor-intro-left h2 span{color:var(--blue)}
+.doctor-intro-left p{
+  color:var(--muted);line-height:1.78;font-size:.93rem;margin-bottom:14px;
+}
+.qual-tags{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:14px}
+.qual-tag{
+  background:var(--blue-light);color:var(--blue);
+  font-family:'Plus Jakarta Sans',sans-serif;
+  font-size:.77rem;font-weight:700;padding:5px 14px;border-radius:50px;
+}
+.reg-tag{
+  display:inline-flex;align-items:center;gap:7px;
+  background:#f0fdf4;color:#059669;
+  border:1.5px solid #a7f3d0;
+  font-family:'Plus Jakarta Sans',sans-serif;
+  font-size:.8rem;font-weight:700;padding:6px 16px;border-radius:50px;
+}
+.reg-tag i{font-size:.85rem}
+
+.doctor-intro-right{display:flex;flex-direction:column;gap:16px}
+.clinic-card{
+  background:var(--section-bg);border-radius:var(--radius-lg);
+  padding:22px 24px;border-left:4px solid var(--blue);
+  box-shadow:var(--shadow);transition:transform .2s,box-shadow .2s;
+}
+.clinic-card:hover{transform:translateY(-3px);box-shadow:var(--shadow-md)}
+.clinic-card-header{display:flex;align-items:center;gap:12px;margin-bottom:12px}
+.clinic-card-icon{
+  width:44px;height:44px;border-radius:12px;
+  background:var(--blue-light);color:var(--blue);
+  display:flex;align-items:center;justify-content:center;
+  font-size:1.1rem;flex-shrink:0;
+}
+.clinic-card-header h4{
+  font-family:'Plus Jakarta Sans',sans-serif;
+  font-size:1rem;font-weight:800;color:var(--text);line-height:1.2;
+}
+.clinic-card-header span{font-size:.77rem;color:var(--muted)}
+.clinic-info-row{
+  display:flex;align-items:flex-start;gap:8px;
+  font-size:.83rem;color:var(--muted);line-height:1.5;margin-bottom:8px;
+}
+.clinic-info-row i{color:var(--blue);font-size:.84rem;margin-top:2px;flex-shrink:0}
+.clinic-call-btn{
+  display:inline-flex;align-items:center;gap:7px;
+  background:var(--blue);color:#fff;
+  padding:9px 18px;border-radius:50px;
+  font-family:'Plus Jakarta Sans',sans-serif;
+  font-weight:600;font-size:.82rem;margin-top:6px;
+  transition:background .2s,transform .15s;
+}
+.clinic-call-btn:hover{background:var(--blue-dark);transform:translateY(-1px)}
+
+/* ══════════════════════════════════════════
+   ABOUT SECTION
+══════════════════════════════════════════ */
+.about{
+  padding:90px 5%;display:grid;
+  grid-template-columns:1fr 1fr;gap:70px;
+  align-items:center;background:var(--section-bg);
+}
+.about-img-blob{position:relative;width:100%;max-width:460px}
+.about-img-blob::before{
+  content:'';position:absolute;inset:-20px -20px -20px 20px;
+  background:var(--blue-light);
+  border-radius:60% 40% 55% 45% / 45% 55% 40% 60%;z-index:0;
+}
+.about-img-blob img{
+  position:relative;z-index:1;width:100%;
+  border-radius:50% 50% 50% 50% / 40% 40% 60% 60%;
+  object-fit:cover;aspect-ratio:4/5;box-shadow:var(--shadow-md);
+}
+.about-stat-card{
+  position:absolute;bottom:20px;right:-18px;z-index:2;
+  background:var(--blue);color:#fff;border-radius:var(--radius);
+  padding:16px 20px;font-family:'Plus Jakarta Sans',sans-serif;
+  text-align:center;box-shadow:var(--shadow-md);
+}
+.about-stat-card .num{font-size:2.2rem;font-weight:800;line-height:1}
+.about-stat-card .label{font-size:.75rem;opacity:.85;margin-top:4px}
+.about-img-wrap{position:relative}
+.about-content h2{
+  font-family:'Plus Jakarta Sans',sans-serif;
+  font-size:clamp(1.7rem,2.6vw,2.4rem);font-weight:800;
+  line-height:1.2;color:var(--text);margin-bottom:16px;
+}
+.about-content h2 span{color:var(--blue)}
+.about-content p{color:var(--muted);line-height:1.75;font-size:.94rem;margin-bottom:24px}
+.about-bullets{display:flex;flex-direction:column;gap:12px;margin-bottom:32px}
+.about-bullets li{
+  display:flex;align-items:center;gap:12px;
+  font-family:'Plus Jakarta Sans',sans-serif;font-weight:600;font-size:.9rem;color:var(--text);
+}
+.about-bullets li .check{
+  width:24px;height:24px;border-radius:50%;
+  background:var(--blue-light);color:var(--blue);
+  display:flex;align-items:center;justify-content:center;font-size:.75rem;flex-shrink:0;
+}
+.btn-learn{
+  display:inline-flex;align-items:center;gap:8px;
+  background:var(--blue);color:#fff;padding:13px 28px;border-radius:50px;
+  font-family:'Plus Jakarta Sans',sans-serif;font-weight:600;font-size:.9rem;
+  transition:background .2s,transform .15s;box-shadow:0 6px 20px rgba(47,91,255,.3);
+}
+.btn-learn:hover{background:var(--blue-dark);transform:translateY(-2px)}
+
+/* ══════════════════════════════════════════
+   SERVICES STRIP
+══════════════════════════════════════════ */
+.strip{background:var(--blue);padding:22px 5%}
+.strip-inner{
+  display:flex;align-items:center;justify-content:space-around;
+  gap:20px;flex-wrap:wrap;max-width:1400px;margin:0 auto;
+}
+.strip-item{
+  display:flex;align-items:center;gap:12px;color:#fff;
+  font-family:'Plus Jakarta Sans',sans-serif;font-weight:600;font-size:.9rem;
+}
+.strip-item-icon{
+  width:44px;height:44px;border-radius:12px;
+  background:rgba(255,255,255,.2);
+  display:flex;align-items:center;justify-content:center;font-size:1.2rem;
+}
+.strip-divider{width:1px;height:40px;background:rgba(255,255,255,.25)}
+
+/* ══════════════════════════════════════════
+   SERVICES SECTION
+══════════════════════════════════════════ */
+.services{background:#fff;padding:90px 5%}
+.services-header{
+  display:flex;align-items:flex-end;justify-content:space-between;
+  gap:24px;margin-bottom:48px;flex-wrap:wrap;
+}
+.services-header .left h2{
+  font-family:'Plus Jakarta Sans',sans-serif;
+  font-size:clamp(1.7rem,2.4vw,2.2rem);font-weight:800;
+  line-height:1.25;color:var(--text);max-width:420px;
+}
+.services-header .left h2 span{color:var(--blue)}
+.btn-explore{
+  display:inline-flex;align-items:center;gap:8px;
+  border:2px solid var(--blue);color:var(--blue);
+  padding:11px 24px;border-radius:50px;
+  font-family:'Plus Jakarta Sans',sans-serif;font-weight:600;font-size:.88rem;
+  transition:background .2s,color .2s;white-space:nowrap;
+}
+.btn-explore:hover{background:var(--blue);color:#fff}
+.cards-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:26px}
+.card{
+  background:#fff;border-radius:var(--radius-lg);overflow:hidden;
+  box-shadow:var(--shadow);transition:transform .25s,box-shadow .25s;
+}
+.card:hover{transform:translateY(-6px);box-shadow:var(--shadow-md)}
+.card-img{position:relative;overflow:hidden;aspect-ratio:16/10}
+.card-img img{width:100%;height:100%;object-fit:cover;transition:transform .4s}
+.card:hover .card-img img{transform:scale(1.05)}
+.card-icon{
+  position:absolute;bottom:-20px;right:24px;
+  width:44px;height:44px;border-radius:12px;
+  background:var(--blue);color:#fff;
+  display:flex;align-items:center;justify-content:center;font-size:1.2rem;
+  box-shadow:0 4px 14px rgba(47,91,255,.4);
+}
+.card-body{padding:30px 24px 24px}
+.card-body h3{
+  font-family:'Plus Jakarta Sans',sans-serif;
+  font-size:1.05rem;font-weight:700;color:var(--text);margin-bottom:10px;
+}
+.card-body p{color:var(--muted);font-size:.87rem;line-height:1.65;margin-bottom:16px}
+.card-link{
+  display:inline-flex;align-items:center;gap:6px;
+  color:var(--blue);font-family:'Plus Jakarta Sans',sans-serif;
+  font-weight:600;font-size:.84rem;transition:gap .2s;
+}
+.card-link:hover{gap:10px}
+
+/* ══════════════════════════════════════════
+   STATS
+══════════════════════════════════════════ */
+.stats{background:var(--blue);padding:50px 5%}
+.stats-grid{
+  display:grid;grid-template-columns:repeat(4,1fr);
+  gap:30px;text-align:center;max-width:1400px;margin:0 auto;
+}
+.stat-item{color:#fff}
+.stat-item .num{
+  font-family:'Plus Jakarta Sans',sans-serif;
+  font-size:2.6rem;font-weight:800;line-height:1;
+}
+.stat-item .lbl{font-size:.88rem;opacity:.85;margin-top:6px}
+
+/* ══════════════════════════════════════════
+   FOOTER
+══════════════════════════════════════════ */
+footer{background:#0d1b4b;color:#c8d0e8;padding:60px 5% 28px}
+.footer-grid{
+  display:grid;grid-template-columns:1.8fr 1fr 1fr 1.4fr;
+  gap:40px;margin-bottom:48px;max-width:1400px;margin-left:auto;margin-right:auto;
+}
+.footer-logo{
+  display:flex;align-items:center;gap:10px;margin-bottom:16px;
+  font-family:'Plus Jakarta Sans',sans-serif;font-weight:800;font-size:1.25rem;color:#fff;
+}
+.footer-col p{font-size:.87rem;line-height:1.75;margin-bottom:20px;color:#8a96b8}
+.footer-social{display:flex;gap:10px}
+.footer-social a{
+  width:36px;height:36px;border-radius:50%;
+  background:rgba(255,255,255,.1);
+  display:flex;align-items:center;justify-content:center;
+  color:#fff;font-size:.85rem;transition:background .2s;
+}
+.footer-social a:hover{background:var(--blue)}
+.footer-col h4{
+  font-family:'Plus Jakarta Sans',sans-serif;
+  font-weight:700;font-size:.97rem;color:#fff;margin-bottom:16px;
+}
+.footer-col ul{display:flex;flex-direction:column;gap:10px}
+.footer-col ul li a{
+  color:#8a96b8;font-size:.86rem;transition:color .2s;
+  display:flex;align-items:center;gap:8px;
+}
+.footer-col ul li a:hover{color:#fff}
+.footer-col ul li a i{font-size:.72rem;color:var(--blue)}
+.contact-item{display:flex;align-items:flex-start;gap:10px;margin-bottom:14px}
+.contact-item i{color:var(--blue);margin-top:3px;font-size:.93rem}
+.contact-item span{font-size:.84rem;line-height:1.6;color:#8a96b8}
+.contact-item a{color:#8a96b8;transition:color .2s}
+.contact-item a:hover{color:#fff}
+.footer-bottom{
+  border-top:1px solid rgba(255,255,255,.08);padding-top:22px;
+  display:flex;align-items:center;justify-content:space-between;
+  font-size:.8rem;color:#5a6380;flex-wrap:wrap;gap:10px;
+  max-width:1400px;margin:0 auto;
+}
+
+/* ══════════════════════════════════════════
+   Z-INDEX STACKING  (above bg emoji layer)
+══════════════════════════════════════════ */
+header,.clinic-widget,.hero,
+.doctor-intro,.about,.strip,
+.services,.stats,footer{
+  position:relative;z-index:1;
+  /* white/coloured backgrounds already cover emoji layer */
+}
+/* hero section background is semi-transparent so emojis peek through softly */
+.hero{background:rgba(247,249,255,.88)}
+.doctor-intro{background:rgba(255,255,255,.90)}
+
+/* ══════════════════════════════════════════
+   RESPONSIVE
+══════════════════════════════════════════ */
+@media(max-width:1024px){
+  .cards-grid{grid-template-columns:repeat(2,1fr) !important}
+  .footer-grid{grid-template-columns:1fr 1fr}
+  .stats-grid{grid-template-columns:repeat(2,1fr)}
+}
+
+@media(max-width:768px){
+  /* show hamburger, hide desktop nav */
+  nav.desktop-nav{display:none}
+  .hamburger-btn{display:flex}
+  .mobile-drawer{display:flex}
+  .btn-book-header{display:none}/* hide desktop book btn; use drawer instead */
+
+  /* ── Hero image: full-width below clinic status ── */
+  .hero{
+    padding:36px 5% 28px;
+  }
+  .hero-circle{width:280px;height:280px}
+  .hero-name-badge{
+    top:auto;bottom:-18px;right:auto;left:50%;
+    transform:translateX(-50%);
+    white-space:nowrap;
+  }
+  .hero-exp-badge{
+    top:10px;left:-16px;bottom:auto;
+    padding:10px 14px;
+  }
+  .hero-exp-badge .num{font-size:1.5rem}
+
+  /* Doctor intro: single column */
+  .doctor-intro{grid-template-columns:1fr;padding:40px 5%}
+
+  /* About */
+  .about{grid-template-columns:1fr;padding:60px 5%}
+  .about-img-wrap{max-width:320px;margin:0 auto}
+
+  /* Services */
+  .cards-grid{grid-template-columns:1fr !important}
+  .services{padding:60px 5%}
+
+  /* Strip */
+  .strip-divider{display:none}
+
+  /* Footer */
+  .footer-grid{grid-template-columns:1fr}
+  .footer-bottom{flex-direction:column;text-align:center}
+
+  /* Status */
+  .clinic-status-cards{flex-direction:column}
+  .status-card{border-radius:14px;padding:10px 14px}
+
+  /* Clinic widget: stack on mobile */
+  .clinic-widget-inner{grid-template-columns:1fr;gap:14px}
+  .cw-today-col{
+    flex-direction:row;align-items:center;gap:12px;
+    padding-right:0;border-right:none;margin-right:0;
+    padding-bottom:12px;border-bottom:1px solid rgba(255,255,255,.2);
+  }
+  .cw-today-day{font-size:1.2rem}
+  .cw-clock-col{
+    flex-direction:row;align-items:center;gap:12px;
+    padding-left:0;border-left:none;margin-left:0;
+    padding-top:12px;border-top:1px solid rgba(255,255,255,.2);
+  }
+  .cw-clock{font-size:1.3rem}
+  .cw-clock-sub{margin-top:0}
+  .cw-clinic-row{flex-direction:column;gap:16px}
+  .cw-divider{width:100%;height:1px;margin:0}
+  .cw-clinic-block{min-width:unset}
+  .cw-next-hint{text-align:left;margin-top:4px}
+  /* Notice — no special overrides needed; layout is already mobile-safe */
+}
+</style>
+</head>
+<body>
+
+<!-- 🩺 Mobile touch cursor -->
+<div id="touch-cursor">🩺</div>
+
+<!-- 🌿 Floating background homeopathy emojis -->
+<div class="bg-emojis" aria-hidden="true" id="bgEmojis"></div>
+
+<!-- ══════════════ NOTICE BOARD ══════════════ -->
+<div class="notice-board" id="noticeBoard">
+  <div class="notice-ticker-wrap">
+    <div class="notice-ticker-label"><i class="fas fa-bullhorn"></i> NOTICE</div>
+    <div class="notice-ticker-track">
+      <div class="notice-ticker-inner" id="tickerInner"></div>
+    </div>
+    <button class="notice-close" onclick="document.getElementById('noticeBoard').style.display='none'" title="Dismiss">
+      <i class="fas fa-times"></i>
+    </button>
+  </div>
+</div>
+
+<!-- ══════════════ HEADER ══════════════ -->
+<header>
+  <div class="header-inner">
+    <div class="logo" id="headerLogo"></div>
+    <nav class="desktop-nav" id="desktopNav"></nav>
+    <div class="header-right">
+      <button class="btn-book-header" onclick="openModal()">
+        <i class="fas fa-calendar-plus"></i>
+        <span data-en="Book Now" data-bn="অ্যাপয়েন্টমেন্ট নিন">Book Now</span>
+      </button>
+      <button class="lang-toggle" id="langToggleBtn" onclick="toggleLanguage()">
+        <span class="lang-label" id="langLabel">বাংলা</span>
+      </button>
+      <button class="hamburger-btn" id="hamburgerBtn" onclick="toggleDrawer()" aria-label="Open menu">
+        <span class="bar"></span><span class="bar"></span><span class="bar"></span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<!-- Overlay -->
+<div class="drawer-overlay" id="drawerOverlay" onclick="closeDrawer()"></div>
+
+<!-- Mobile drawer -->
+<div class="mobile-drawer" id="mobileDrawer">
+  <div class="drawer-header">
+    <div class="logo" id="drawerLogo"></div>
+    <button class="drawer-close" onclick="closeDrawer()"><i class="fas fa-times"></i></button>
+  </div>
+  <div id="drawerNav"></div>
+  <button class="drawer-book-btn" onclick="closeDrawer();openModal()">
+    <i class="fas fa-calendar-plus"></i>
+    <span data-en="Book Appointment" data-bn="অ্যাপয়েন্টমেন্ট নিন">Book Appointment</span>
+  </button>
+  <a class="drawer-wa-btn" id="drawerWA" href="#" target="_blank" onclick="closeDrawer()">
+    <i class="fab fa-whatsapp"></i>
+    <span data-en="WhatsApp Us" data-bn="হোয়াটসঅ্যাপ করুন">WhatsApp Us</span>
+  </a>
+</div>
+
+<!-- ══════════════ BOOK NOW MODAL ══════════════ -->
+<div class="modal-overlay" id="bookingModal" onclick="handleOverlayClick(event)">
+  <div class="modal-box">
+    <button class="modal-close-btn" onclick="closeModal()"><i class="fas fa-times"></i></button>
+    <div class="modal-title">📅 <span data-en="Book Appointment" data-bn="অ্যাপয়েন্টমেন্ট নিন">Book Appointment</span></div>
+    <div class="modal-sub" data-en="Dr. Bappa Karmakar will confirm your slot shortly." data-bn="ডাঃ বাপ্পা কর্মকার শীঘ্রই আপনার স্লট নিশ্চিত করবেন।">Dr. Bappa Karmakar will confirm your slot shortly.</div>
+    <div class="form-group">
+      <label><i class="fas fa-user"></i> <span data-en="Full Name" data-bn="পুরো নাম">Full Name</span></label>
+      <input id="f_name" type="text" placeholder="Your full name"/>
+    </div>
+    <div class="form-group">
+      <label><i class="fas fa-map-marker-alt"></i> <span data-en="Your Place / Village" data-bn="আপনার জায়গা / গ্রাম">Your Place / Village</span></label>
+      <input id="f_place" type="text" placeholder="e.g. Ranaghat, Shantipur…"/>
+    </div>
+    <div class="form-group">
+      <label><i class="fas fa-clinic-medical"></i> <span data-en="Preferred Clinic" data-bn="পছন্দের ক্লিনিক">Preferred Clinic</span></label>
+      <select id="f_clinic"><option value="" data-en="Select a clinic" data-bn="ক্লিনিক বেছে নিন">Select a clinic</option></select>
+    </div>
+    <div class="form-group">
+      <label><i class="far fa-clock"></i> <span data-en="Preferred Time" data-bn="পছন্দের সময়">Preferred Time</span></label>
+      <input id="f_time" type="time"/>
+    </div>
+    <div class="form-group">
+      <label><i class="fas fa-phone-alt"></i> <span data-en="Phone Number" data-bn="ফোন নম্বর">Phone Number</span></label>
+      <input id="f_phone" type="tel" placeholder="+91 XXXXX XXXXX"/>
+    </div>
+    <button class="btn-submit" onclick="submitBooking()">
+      <i class="fab fa-whatsapp"></i>
+      <span data-en="Confirm & Send on WhatsApp" data-bn="নিশ্চিত করুন ও হোয়াটসঅ্যাপে পাঠান">Confirm &amp; Send on WhatsApp</span>
+    </button>
+  </div>
+</div>
+
+<!-- ══════════════ LIVE CLINIC WIDGET ══════════════ -->
+<div class="clinic-widget" id="clinic-status">
+  <div class="clinic-widget-inner">
+    <div class="cw-today-col">
+      <span class="cw-today-label" data-en="Today" data-bn="আজ">Today</span>
+      <span class="cw-today-day" id="cwDay">—</span>
+      <span class="cw-today-date" id="cwDate">—</span>
+    </div>
+    <div class="cw-main" id="cwMain"></div>
+    <div class="cw-clock-col">
+      <span class="cw-clock" id="cwClock">—</span>
+      <span class="cw-clock-sub" data-en="Current Time" data-bn="বর্তমান সময়">Current Time</span>
+      <span class="cw-next-hint" id="cwNextHint"></span>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════ HERO ══════════════ -->
+<section class="hero">
+  <div class="hero-img-wrap">
+    <div class="hero-circle">
+      <img id="heroImg" src="" alt=""/>
+    </div>
+    <div class="hero-name-badge">
+      <div class="badge-icon-circle"><i class="fas fa-user-md"></i></div>
+      <div class="badge-txt">
+        <strong id="heroBadgeName"></strong>
+        <span id="heroBadgeTitle"></span>
+      </div>
+    </div>
+    <div class="hero-exp-badge">
+      <div class="num" id="heroExpNum"></div>
+      <div class="lbl" id="heroExpLbl"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════ DOCTOR INTRODUCTION ══════════════ -->
+<section class="doctor-intro" id="doctor-intro">
+  <div class="doctor-intro-left">
+    <div class="section-label" id="docSectionLabel"></div>
+    <h2 id="docHeading"></h2>
+    <p id="docBio1"></p>
+    <p id="docBio2"></p>
+    <div class="qual-tags" id="docQuals"></div>
+    <span class="reg-tag" id="docReg"></span>
+  </div>
+  <div class="doctor-intro-right" id="clinicCards"></div>
+</section>
+
+<!-- ══════════════ ABOUT ══════════════ -->
+<section class="about" id="about">
+  <div class="about-img-wrap">
+    <div class="about-img-blob">
+      <img id="aboutImg" src="" alt=""/>
+    </div>
+    <div class="about-stat-card">
+      <div class="num" id="aboutStatNum"></div>
+      <div class="label" id="aboutStatLbl"></div>
+    </div>
+  </div>
+  <div class="about-content">
+    <div class="section-label" id="aboutSectionLabel"></div>
+    <h2 id="aboutHeading"></h2>
+    <p id="aboutDesc"></p>
+    <ul class="about-bullets" id="aboutBullets"></ul>
+    <a href="#doctor-intro" class="btn-learn" id="aboutBtn">Learn More <i class="fas fa-arrow-right"></i></a>
+  </div>
+</section>
+
+<!-- ══════════════ SERVICES STRIP ══════════════ -->
+<div class="strip">
+  <div class="strip-inner" id="servicesStrip"></div>
+</div>
+
+<!-- ══════════════ SERVICES SECTION ══════════════ -->
+<section class="services" id="services">
+  <div class="services-header">
+    <div class="left">
+      <div class="section-label" id="servicesSectionLabel"></div>
+      <h2 id="servicesHeading"></h2>
+    </div>
+    <a href="#" class="btn-explore" id="servicesExploreBtn">Explore All Services <i class="fas fa-arrow-right"></i></a>
+  </div>
+  <div class="cards-grid" id="servicesGrid" style="grid-template-columns:repeat(4,1fr)"></div>
+</section>
+
+<!-- ══════════════ STATS ══════════════ -->
+<div class="stats">
+  <div class="stats-grid" id="statsGrid"></div>
+</div>
+
+<!-- ══════════════ FOOTER ══════════════ -->
+<footer id="contact">
+  <div class="footer-grid">
+    <div class="footer-col">
+      <div class="footer-logo" id="footerLogo"></div>
+      <p id="footerDesc"></p>
+      <div class="footer-social" id="footerSocial"></div>
+    </div>
+    <div class="footer-col">
+      <h4 data-en="Quick Links" data-bn="দ্রুত লিঙ্ক">Quick Links</h4>
+      <ul id="footerQuickLinks"></ul>
+    </div>
+    <div class="footer-col">
+      <h4 data-en="Our Services" data-bn="আমাদের সেবা">Our Services</h4>
+      <ul id="footerServices"></ul>
+    </div>
+    <div class="footer-col">
+      <h4 data-en="Contact Us" data-bn="যোগাযোগ">Contact Us</h4>
+      <div id="footerContact"></div>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span id="footerCopy"></span>
+    <span id="footerCopySub"></span>
+  </div>
+</footer>
+
+<script>
+/* ══════════════════════════════════════════════════
+   DATA LOADER — fetches data.json then renders all
+══════════════════════════════════════════════════ */
+let D = {};        // global data
+let currentLang = 'en';
+
+async function loadData(){
+  try{
+    const res = await fetch('data.json');
+    D = await res.json();
+    renderAll();
+  } catch(e){
+    console.error('Could not load data.json:', e);
+    document.body.innerHTML = '<div style="padding:40px;font-family:sans-serif;color:red"><h2>⚠️ Error loading data.json</h2><p>Make sure data.json is in the same folder as index.html and you are running on a server (not file://).</p></div>';
+  }
+}
+
+function t(obj, field){
+  /* return English or Bengali value */
+  const bn = field + '_bn';
+  if(currentLang === 'bn' && obj[bn]) return obj[bn];
+  return obj[field] || obj[field + '_en'] || '';
+}
+
+/* ── RENDER ALL ── */
+function renderAll(){
+  setTitle();
+  renderNoticeTicker();
+  renderHeader();
+  renderDrawer();
+  renderClinicModal();
+  renderHero();
+  renderDoctor();
+  renderAbout();
+  renderServicesStrip();
+  renderServices();
+  renderStats();
+  renderFooter();
+  startClinicWidget();
+  startBgEmojis();
+  startTouchCursor();
+}
+
+/* ── SITE TITLE ── */
+function setTitle(){
+  document.getElementById('pageTitle').textContent = D.site.title;
+  document.getElementById('drawerWA').href =
+    `https://wa.me/${D.site.whatsapp_number}?text=Hello%20Dr.%20Bappa%2C%20I%20want%20to%20book%20an%20appointment.`;
+}
+
+/* ── LOGO HTML ── */
+function logoHTML(size){
+  return `<div class="logo-icon" style="width:${size}px;height:${size}px;font-size:${size*.26}rem">
+    <i class="${D.site.logo.icon}"></i></div>
+    ${D.site.logo.name_plain}<span class="blue">${D.site.logo.name_highlight}</span>`;
+}
+
+/* ── NOTICE TICKER ── */
+function renderNoticeTicker(){
+  const speed = D.notice_board.ticker_speed_seconds;
+  // inject CSS speed
+  const style = document.createElement('style');
+  style.textContent = `.notice-ticker-inner{animation:ticker ${speed}s linear infinite}`;
+  document.head.appendChild(style);
+
+  // build double set for seamless loop
+  const setHTML = D.notice_board.notices.map(n => `
+    <span class="ticker-item">
+      <span class="ticker-badge" style="background:${n.tag_color}">${n.tag}</span>
+      ${currentLang==='bn' ? n.text_bn : n.text_en}
+    </span>
+    <span class="ticker-sep">✦</span>
+  `).join('');
+  document.getElementById('tickerInner').innerHTML = setHTML + setHTML;
+}
+
+/* ── HEADER ── */
+function renderHeader(){
+  document.getElementById('headerLogo').innerHTML = logoHTML(40);
+  const nav = D.nav.map((item,i) =>
+    `<a href="${item.href}" class="${i===0?'active':''}"
+       data-en="${item.label}" data-bn="${item.label_bn}">${currentLang==='bn'?item.label_bn:item.label}</a>`
+  ).join('');
+  document.getElementById('desktopNav').innerHTML = nav;
+}
+
+/* ── DRAWER ── */
+function renderDrawer(){
+  document.getElementById('drawerLogo').innerHTML = logoHTML(34);
+  const icons = ['fas fa-home','fas fa-stethoscope','fas fa-user-md',
+                 'fas fa-clinic-medical','fas fa-blog','fas fa-info-circle','fas fa-envelope'];
+  const nav = D.nav.map((item,i) =>
+    `<a href="${item.href}" onclick="closeDrawer()">
+      <i class="${icons[i]||'fas fa-circle'}"></i>
+      <span data-en="${item.label}" data-bn="${item.label_bn}">${currentLang==='bn'?item.label_bn:item.label}</span>
+    </a>`
+  ).join('');
+  document.getElementById('drawerNav').innerHTML = nav;
+}
+
+/* ── CLINIC SELECT IN MODAL ── */
+function renderClinicModal(){
+  const sel = document.getElementById('f_clinic');
+  const opts = D.clinics.map(c =>
+    `<option value="${c.name}">${c.name}</option>`
+  ).join('');
+  sel.innerHTML = `<option value="">Select a clinic</option>${opts}`;
+}
+
+/* ── HERO ── */
+function renderHero(){
+  const h = D.hero;
+  const img = document.getElementById('heroImg');
+  img.src = h.doctor_image.src; img.alt = h.doctor_image.alt;
+  document.getElementById('heroBadgeName').textContent = h.badge_name;
+  document.getElementById('heroBadgeTitle').textContent =
+    currentLang==='bn' ? h.badge_title_bn : h.badge_title;
+  document.getElementById('heroExpNum').textContent = h.experience_number;
+  const lbl = currentLang==='bn' ? h.experience_label_bn : h.experience_label;
+  document.getElementById('heroExpLbl').innerHTML = lbl.replace('\n','<br>');
+}
+
+/* ── DOCTOR INTRO ── */
+function renderDoctor(){
+  const doc = D.doctor;
+  document.getElementById('docSectionLabel').textContent =
+    currentLang==='bn' ? doc.section_label_bn : doc.section_label;
+  document.getElementById('docHeading').innerHTML =
+    currentLang==='bn' ? doc.heading_bn : doc.heading_en;
+  document.getElementById('docBio1').innerHTML =
+    currentLang==='bn' ? doc.bio_bn : doc.bio_en;
+  document.getElementById('docBio2').innerHTML =
+    currentLang==='bn' ? doc.bio2_bn : doc.bio2_en;
+
+  const quals = currentLang==='bn' ? doc.qualifications_bn : doc.qualifications;
+  document.getElementById('docQuals').innerHTML =
+    quals.map(q=>`<span class="qual-tag">${q}</span>`).join('');
+
+  document.getElementById('docReg').innerHTML =
+    `<i class="fas fa-id-badge"></i> ${currentLang==='bn' ? doc.registration_bn : doc.registration}`;
+
+  // Clinic cards
+  document.getElementById('clinicCards').innerHTML = D.clinics.map(c => `
+    <div class="clinic-card">
+      <div class="clinic-card-header">
+        <div class="clinic-card-icon"><i class="${c.icon}"></i></div>
+        <div>
+          <h4>${currentLang==='bn' ? c.name_bn : c.name}</h4>
+          <span>${currentLang==='bn' ? c.subtitle_bn : c.subtitle}</span>
+        </div>
+      </div>
+      <div class="clinic-info-row">
+        <i class="fas fa-map-marker-alt"></i>
+        <span>${c.address}${c.address_note ? '<br><em>'+c.address_note+'</em>' : ''}</span>
+      </div>
+      <div class="clinic-info-row">
+        <i class="far fa-clock"></i>
+        <span>${currentLang==='bn' ? c.schedule_display_bn : c.schedule_display}</span>
+      </div>
+      <a href="tel:${c.phone}" class="clinic-call-btn">
+        <i class="fas fa-phone-alt"></i> ${c.phone}
+      </a>
+    </div>
+  `).join('');
+}
+
+/* ── ABOUT ── */
+function renderAbout(){
+  const ab = D.about;
+  const img = document.getElementById('aboutImg');
+  img.src = ab.image.src; img.alt = ab.image.alt;
+  document.getElementById('aboutStatNum').textContent = ab.stat_number;
+  document.getElementById('aboutStatLbl').textContent =
+    currentLang==='bn' ? ab.stat_label_bn : ab.stat_label;
+  document.getElementById('aboutSectionLabel').textContent =
+    currentLang==='bn' ? ab.section_label_bn : ab.section_label;
+  document.getElementById('aboutHeading').innerHTML =
+    `<span>${currentLang==='bn'?ab.heading_highlight_bn:ab.heading_highlight}</span> ${currentLang==='bn'?ab.heading_rest_bn:ab.heading_rest}`;
+  document.getElementById('aboutDesc').textContent =
+    currentLang==='bn' ? ab.description_bn : ab.description_en;
+  document.getElementById('aboutBullets').innerHTML = ab.bullets.map(b =>
+    `<li><span class="check"><i class="fas fa-check"></i></span> ${currentLang==='bn'?b.bn:b.en}</li>`
+  ).join('');
+  document.getElementById('aboutBtn').innerHTML =
+    `${currentLang==='bn'?ab.btn_bn:ab.btn_en} <i class="fas fa-arrow-right"></i>`;
+}
+
+/* ── SERVICES STRIP ── */
+function renderServicesStrip(){
+  document.getElementById('servicesStrip').innerHTML = D.services_strip.map((item,i) => `
+    ${i>0?'<div class="strip-divider"></div>':''}
+    <div class="strip-item">
+      <div class="strip-item-icon"><i class="${item.icon}"></i></div>
+      ${currentLang==='bn'?item.label_bn:item.label_en}
+    </div>
+  `).join('');
+}
+
+/* ── SERVICES CARDS ── */
+function renderServices(){
+  const sv = D.services;
+  document.getElementById('servicesSectionLabel').textContent =
+    currentLang==='bn' ? sv.section_label_bn : sv.section_label;
+  document.getElementById('servicesHeading').innerHTML =
+    currentLang==='bn' ? sv.heading_bn : sv.heading_en;
+  document.getElementById('servicesExploreBtn').innerHTML =
+    `${currentLang==='bn'?sv.explore_btn_bn:sv.explore_btn_en} <i class="fas fa-arrow-right"></i>`;
+  document.getElementById('servicesGrid').innerHTML = sv.cards.map(c => `
+    <div class="card">
+      <div class="card-img">
+        <img src="${c.image}" alt="${c.alt}" loading="lazy"/>
+        <div class="card-icon"><i class="${c.icon}"></i></div>
+      </div>
+      <div class="card-body">
+        <h3>${currentLang==='bn'?c.title_bn:c.title_en}</h3>
+        <p>${currentLang==='bn'?c.desc_bn:c.desc_en}</p>
+        <a href="#" class="card-link">
+          ${currentLang==='bn'?'আরও জানুন':'Learn More'} <i class="fas fa-arrow-right"></i>
+        </a>
+      </div>
+    </div>
+  `).join('');
+}
+
+/* ── STATS ── */
+function renderStats(){
+  document.getElementById('statsGrid').innerHTML = D.stats.map(s => `
+    <div class="stat-item">
+      <div class="num">${s.number}</div>
+      <div class="lbl">${currentLang==='bn'?s.label_bn:s.label_en}</div>
+    </div>
+  `).join('');
+}
+
+/* ── FOOTER ── */
+function renderFooter(){
+  const ft = D.footer;
+  document.getElementById('footerLogo').innerHTML = `
+    <div class="logo-icon"><i class="${D.site.logo.icon}"></i></div>
+    ${D.site.logo.name_plain}${D.site.logo.name_highlight}`;
+  document.getElementById('footerDesc').textContent =
+    currentLang==='bn' ? ft.description_bn : ft.description_en;
+
+  document.getElementById('footerSocial').innerHTML = D.social_links.map(s =>
+    `<a href="${s.url}" target="_blank"><i class="${s.icon}"></i></a>`
+  ).join('');
+
+  document.getElementById('footerQuickLinks').innerHTML = ft.quick_links.map(l =>
+    `<li><a href="${l.href}"><i class="fas fa-chevron-right"></i> ${currentLang==='bn'?l.label_bn:l.label_en}</a></li>`
+  ).join('');
+
+  document.getElementById('footerServices').innerHTML = ft.service_links.map(s =>
+    `<li><a href="#"><i class="fas fa-chevron-right"></i> ${currentLang==='bn'?s.label_bn:s.label_en}</a></li>`
+  ).join('');
+
+  document.getElementById('footerContact').innerHTML = D.clinics.map(c => `
+    <div class="contact-item">
+      <i class="${c.icon}"></i>
+      <span><strong style="color:#fff">${c.name}</strong><br/>${c.address}</span>
+    </div>
+  `).join('') + `
+    <div class="contact-item">
+      <i class="fas fa-phone-alt"></i>
+      <a href="tel:${D.site.phone}">+91 ${D.site.phone}</a>
+    </div>
+    <div class="contact-item">
+      <i class="fab fa-whatsapp"></i>
+      <a href="https://wa.me/${D.site.whatsapp_number}" target="_blank">WhatsApp: ${D.site.phone}</a>
+    </div>`;
+
+  document.getElementById('footerCopy').textContent    = D.site.copyright;
+  document.getElementById('footerCopySub').textContent = D.site.copyright_sub;
+}
+
+/* ══════════════════════════════════════════════════
+   LANGUAGE TOGGLE
+══════════════════════════════════════════════════ */
+function toggleLanguage(){
+  currentLang = currentLang === 'en' ? 'bn' : 'en';
+  document.getElementById('langLabel').textContent = currentLang==='en' ? 'বাংলা' : 'English';
+  document.documentElement.lang = currentLang;
+  // re-render all data-driven sections
+  renderNoticeTicker();
+  renderHeader();
+  renderDrawer();
+  renderHero();
+  renderDoctor();
+  renderAbout();
+  renderServicesStrip();
+  renderServices();
+  renderStats();
+  renderFooter();
+  // translate static [data-en][data-bn] elements
+  document.querySelectorAll('[data-en][data-bn]').forEach(el => {
+    if(!el.children.length || el.tagName==='SPAN')
+      el.textContent = currentLang==='bn' ? el.getAttribute('data-bn') : el.getAttribute('data-en');
+  });
+}
+
+/* ══════════════════════════════════════════════════
+   HAMBURGER / DRAWER
+══════════════════════════════════════════════════ */
+function toggleDrawer(){
+  const open = document.getElementById('mobileDrawer').classList.contains('open');
+  open ? closeDrawer() : openDrawer();
+}
+function openDrawer(){
+  document.getElementById('hamburgerBtn').classList.add('open');
+  document.getElementById('mobileDrawer').classList.add('open');
+  document.getElementById('drawerOverlay').classList.add('open');
+  document.body.style.overflow='hidden';
+}
+function closeDrawer(){
+  document.getElementById('hamburgerBtn').classList.remove('open');
+  document.getElementById('mobileDrawer').classList.remove('open');
+  document.getElementById('drawerOverlay').classList.remove('open');
+  document.body.style.overflow='';
+}
+
+/* ══════════════════════════════════════════════════
+   BOOKING MODAL
+══════════════════════════════════════════════════ */
+function openModal(){
+  document.getElementById('bookingModal').classList.add('open');
+  document.body.style.overflow='hidden';
+}
+function closeModal(){
+  document.getElementById('bookingModal').classList.remove('open');
+  document.body.style.overflow='';
+}
+function handleOverlayClick(e){
+  if(e.target===document.getElementById('bookingModal')) closeModal();
+}
+function submitBooking(){
+  const name  = document.getElementById('f_name').value.trim();
+  const place = document.getElementById('f_place').value.trim();
+  const clinic= document.getElementById('f_clinic').value.trim();
+  const time  = document.getElementById('f_time').value.trim();
+  const phone = document.getElementById('f_phone').value.trim();
+  if(!name){ alert('Please enter your full name.'); return; }
+  let tf = time;
+  if(time){const[h,m]=time.split(':').map(Number);const ap=h>=12?'PM':'AM',h12=h%12||12;tf=`${h12}:${String(m).padStart(2,'0')} ${ap}`;}
+  const msg=`🌿 *Appointment Request*\n━━━━━━━━━━━━━━━━━━\n👤 *Name:* ${name||'—'}\n📍 *Place:* ${place||'—'}\n🏥 *Clinic:* ${clinic||'—'}\n⏰ *Preferred Time:* ${tf||'—'}\n📞 *Phone:* ${phone||'—'}\n━━━━━━━━━━━━━━━━━━\nSent via website booking form.`;
+  window.open(`https://wa.me/${D.site.whatsapp_number}?text=${encodeURIComponent(msg)}`,'_blank');
+  closeModal();
+}
+
+/* ══════════════════════════════════════════════════
+   LIVE CLINIC WIDGET
+══════════════════════════════════════════════════ */
+function startClinicWidget(){
+  const DAY_SHORT=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+  const DAY_FULL =['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+  const MONTHS   =['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  function toMins(t){const[h,m]=t.split(':').map(Number);return h*60+m;}
+  function fmt12(t){const[h,m]=t.split(':').map(Number);const ap=h>=12?'PM':'AM',h12=h%12||12;return `${h12}:${String(m).padStart(2,'0')} ${ap}`;}
+  function padZ(n){return String(n).padStart(2,'0');}
+  function getState(clinic,dayIdx,curMins){
+    const sched=clinic.schedule; const todaySlots=sched[dayIdx]||[];
+    let active=null;
+    for(const s of todaySlots){if(curMins>=toMins(s.open)&&curMins<toMins(s.close)){active=s;break;}}
+    let next=null;
+    outer:for(let i=active?1:0;i<=7;i++){const nd=(dayIdx+i)%7;const sl=sched[nd];if(sl&&sl.length){if(i===0){for(const s of sl){if(toMins(s.open)>curMins){next={day:nd,slot:s};break outer;}}}else{next={day:nd,slot:sl[0]};break outer;}}}
+    return{todaySlots,activeSlot:active,nextInfo:next};
+  }
+  function render(){
+    const now=new Date(),day=now.getDay(),cur=now.getHours()*60+now.getMinutes();
+    const h=now.getHours(),m=now.getMinutes(),s=now.getSeconds();
+    const ap=h>=12?'PM':'AM';
+    document.getElementById('cwClock').textContent=`${h%12||12}:${padZ(m)}:${padZ(s)} ${ap}`;
+    document.getElementById('cwDay').textContent=DAY_FULL[day];
+    document.getElementById('cwDate').textContent=`${MONTHS[now.getMonth()]} ${now.getDate()}, ${now.getFullYear()}`;
+    let html='<div class="cw-clinic-row">',hint='';
+    D.clinics.forEach((clinic,ci)=>{
+      const{todaySlots,activeSlot,nextInfo}=getState(clinic,day,cur);
+      const open=!!activeSlot;
+      const badge=open?`<span class="cw-open-badge"><span class="pulse-dot"></span> Open Now</span>`:`<span class="cw-closed-badge">Closed</span>`;
+      const slots=todaySlots.length?todaySlots.map(s=>`<span class="cw-slot${activeSlot&&s.open===activeSlot.open?' active-slot':''}"><i class="far fa-clock"></i>${fmt12(s.open)} – ${fmt12(s.close)}</span>`).join(''):`<span class="cw-closed-label">Closed today</span>`;
+      const allDays=Object.keys(clinic.schedule).map(Number);
+      const pills=allDays.map(d=>`<span class="cw-day-pill${d===day?' today':''}">${DAY_SHORT[d]}</span>`).join('');
+      if(!hint&&!open&&nextInfo)hint=`Next opening: <strong>${clinic.name}</strong> — ${DAY_SHORT[nextInfo.day]} at ${fmt12(nextInfo.slot.open)}`;
+      html+=`<div class="cw-clinic-block"><div class="cw-clinic-name"><i class="${clinic.icon}" style="font-size:.95rem;opacity:.8"></i> ${clinic.name} ${badge}</div><div class="cw-days-row"><span class="cw-days-label">Opens:</span>${pills}</div><div class="cw-slots">${slots}</div></div>`;
+      if(ci===0)html+=`<div class="cw-divider"></div>`;
+    });
+    html+='</div>';
+    document.getElementById('cwMain').innerHTML=html;
+    document.getElementById('cwNextHint').innerHTML=hint;
+  }
+  render(); setInterval(render,1000);
+  (function mid(){const n=new Date(),nx=new Date(n);nx.setHours(24,0,1,0);setTimeout(()=>{render();mid();},nx-n);})();
+}
+
+/* ══════════════════════════════════════════════════
+   BACKGROUND EMOJIS
+══════════════════════════════════════════════════ */
+function startBgEmojis(){
+  const symbols=['💊','🌿','🍃','⚗️','🧪','🔬','🌱','🾙','🧴','🌻','🌼','🍀','🪴','💉','🩺','🌿','💊','🍃','⚗️','🌱','🾙','🌼','🔬'];
+  const container=document.getElementById('bgEmojis');
+  for(let i=0;i<40;i++){
+    const el=document.createElement('span');
+    el.className='bg-emoji';
+    el.textContent=symbols[i%symbols.length];
+    const left=Math.random()*100,dur=12+Math.random()*14,delay=-(Math.random()*dur),size=1.8+Math.random()*1.6;
+    el.style.cssText=`left:${left}%;--dur:${dur}s;--delay:${delay}s;font-size:${size}rem;`;
+    container.appendChild(el);
+  }
+}
+
+/* ══════════════════════════════════════════════════
+   TOUCH CURSOR
+══════════════════════════════════════════════════ */
+function startTouchCursor(){
+  const el=document.getElementById('touch-cursor');
+  let tx=0,ty=0,cx=0,cy=0,visible=false,timer;
+  function lerp(a,b,t){return a+(b-a)*t;}
+  function loop(){cx=lerp(cx,tx,.18);cy=lerp(cy,ty,.18);el.style.left=cx+'px';el.style.top=cy+'px';requestAnimationFrame(loop);}
+  function show(x,y){tx=x;ty=y;if(!visible){cx=x;cy=y;visible=true;}el.style.opacity='1';clearTimeout(timer);}
+  function hide(){timer=setTimeout(()=>{el.style.opacity='0';visible=false;},600);}
+  document.addEventListener('touchstart',e=>show(e.touches[0].clientX,e.touches[0].clientY),{passive:true});
+  document.addEventListener('touchmove', e=>show(e.touches[0].clientX,e.touches[0].clientY),{passive:true});
+  document.addEventListener('touchend',  hide,{passive:true});
+  loop();
+}
+
+/* ── BOOT ── */
+loadData();
+</script>
+</body>
+</html>
