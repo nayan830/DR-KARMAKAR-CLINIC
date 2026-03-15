@@ -3,6 +3,8 @@
     "title": "Dr. Bappa Karmakar – Homeopathy Physician",
     "logo": {
       "icon": "fas fa-leaf",
+      "image_url": "",
+      "image_url__INSTRUCTIONS": "To use a custom logo image: put your logo file (e.g. logo.png) in the same folder and set image_url to 'logo.png'. Leave empty to use the default leaf icon.",
       "name_plain": "Dr ",
       "name_highlight": "Bappa Karmakar"
     },
@@ -50,7 +52,7 @@
 
   "hero": {
     "doctor_image": {
-      "src": "image folder/doctor image.png",
+      "src": "https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?w=420&q=80&fit=crop&crop=top",
       "alt": "Dr. Bappa Karmakar – Homeopathy Physician"
     },
     "badge_name": "Dr. Bappa Karmakar",
