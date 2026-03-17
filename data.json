@@ -123,7 +123,7 @@
     "section_label": "ABOUT US",
     "section_label_bn": "আমাদের সম্পর্কে",
     "image": {
-      "src": "https://images.unsplash.com/photo-1559839734-2b71ea197ec2?w=520&q=80&fit=crop&crop=top",
+      "src": "image folder/main.png",
       "alt": "Dr. Bappa Karmakar with patient"
     },
     "stat_number": "15+",
@@ -160,7 +160,7 @@
     "explore_btn_bn": "সব সেবা দেখুন",
     "cards": [
       {
-        "image": "https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?w=500&q=80&fit=crop",
+        "image": "image folder/D1 (2).png",
         "alt": "General Homeopathy",
         "icon": "fas fa-stethoscope",
         "title_en": "General Homeopathy",
@@ -169,7 +169,7 @@
         "desc_bn": "সাধারণ অসুস্থতা, সংক্রমণ, হজমের সমস্যা ও সামগ্রিক স্বাস্থ্যের জন্য ব্যক্তিগতকৃত চিকিৎসা।"
       },
       {
-        "image": "https://images.unsplash.com/photo-1576091160550-2173dba999ef?w=500&q=80&fit=crop",
+        "image": "image folder/D1 (1).png",
         "alt": "Chronic Disease",
         "icon": "fas fa-heartbeat",
         "title_en": "Chronic Disease Treatment",
@@ -178,7 +178,7 @@
         "desc_bn": "ডায়াবেটিস, বাত, উচ্চ রক্তচাপ, হাঁপানি ও অন্যান্য দীর্ঘমেয়াদী রোগের কোমল হোমিওপ্যাথিক ব্যবস্থাপনা।"
       },
       {
-        "image": "https://images.unsplash.com/photo-1551601651-2a8555f1a136?w=500&q=80&fit=crop",
+        "image": "image folder/c.png",
         "alt": "Skin & Allergy",
         "icon": "fas fa-allergies",
         "title_en": "Skin & Allergy Care",
@@ -187,7 +187,7 @@
         "desc_bn": "একজিমা, সোরিয়াসিস, আমবাত, অ্যালার্জিক রাইনাইটিস ও অন্যান্য ত্বকের রোগের কার্যকর চিকিৎসা।"
       },
       {
-        "image": "https://images.unsplash.com/photo-1631815589968-fdb09a223b1e?w=500&q=80&fit=crop",
+        "image": "image folder/k (1).png",
         "alt": "Paediatric Treatment",
         "icon": "fas fa-child",
         "title_en": "Paediatric Treatment",
