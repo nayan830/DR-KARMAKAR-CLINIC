@@ -689,6 +689,21 @@ nav.desktop-nav a.active::after{
 }
 .clinic-call-btn:hover{background:var(--blue-dark);transform:translateY(-1px)}
 
+/* ---------- NEW: Map link style ---------- */
+.map-link{
+  color: var(--blue);
+  font-weight: 600;
+  text-decoration: none;
+}
+.map-link:hover{
+  text-decoration: underline;
+}
+.map-link i{
+  font-size: 0.75rem;
+  margin-left: 4px;
+}
+/* ----------------------------------------- */
+
 /* ══════════════════════════════════════════
    ABOUT SECTION
 ══════════════════════════════════════════ */
@@ -1348,6 +1363,13 @@ function renderDoctor(){
       <a href="tel:${c.phone}" class="clinic-call-btn">
         <i class="fas fa-phone-alt"></i> ${c.phone}
       </a>
+      <!-- NEW: Location link -->
+      <div class="clinic-info-row" style="margin-top: 8px;">
+        <i class="fas fa-map-marked-alt"></i>
+        <a href="${c.location}" target="_blank" rel="noopener" class="map-link">
+          View Location on Map <i class="fas fa-external-link-alt"></i>
+        </a>
+      </div>
     </div>
   `).join('');
 }
