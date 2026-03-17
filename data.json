@@ -52,7 +52,7 @@
 
   "hero": {
     "doctor_image": {
-      "src": "image folder/doctor image.png",
+      "src": "image folder/doctor image.jpeg",
       "alt": "Dr. Bappa Karmakar – Homeopathy Physician"
     },
     "badge_name": "Dr. Bappa Karmakar",
