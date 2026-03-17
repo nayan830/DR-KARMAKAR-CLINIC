@@ -4,7 +4,7 @@
     "logo": {
       "icon": "fas fa-leaf",
       "image_url": "",
-      "image_url__INSTRUCTIONS": "To use a custom logo image: put your logo file (e.g. logo.png) in the same folder and set image_url to 'logo.png'. Leave empty to use the default leaf icon.",
+      "image_url__INSTRUCTIONS": "image folder/doctor image.jpeg",
       "name_plain": "Dr ",
       "name_highlight": "Bappa Karmakar"
     },
