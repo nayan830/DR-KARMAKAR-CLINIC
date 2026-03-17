@@ -972,25 +972,40 @@ header,.clinic-widget,.hero,
   .cw-clinic-block{min-width:unset}
   .cw-next-hint{text-align:left;margin-top:4px}
 
-  /* ── MOBILE NOTICE BOARD: smaller label ── */
+  /* ── MOBILE NOTICE BOARD: smaller label and text ── */
+  .notice-ticker-wrap{
+    height: 38px; /* slightly shorter */
+  }
   .notice-ticker-label{
-    padding: 0 10px;
-    font-size: 0.6rem;
-    gap: 4px;
+    padding: 0 8px;
+    font-size: 0.55rem;
+    gap: 3px;
   }
   .notice-ticker-label i{
-    font-size: 0.8rem;
+    font-size: 0.7rem;
   }
   .ticker-item{
-    padding: 0 20px;
-    font-size: 0.75rem;
+    padding: 0 15px;
+    font-size: 0.7rem;
+    gap: 5px;
+  }
+  .ticker-badge{
+    font-size: 0.55rem;
+    padding: 1px 6px;
   }
   .ticker-sep{
-    padding: 0 6px;
+    padding: 0 4px;
+    font-size: 0.9rem;
+  }
+  .notice-close{
+    width: 26px;
+    height: 26px;
+    font-size: 0.7rem;
+    margin: 0 6px;
   }
   /* ensure ticker animation works on mobile */
   .notice-ticker-inner{
-    animation: ticker 5s linear infinite;  /* same speed */
+    animation: ticker 5s linear infinite;
   }
 }
 </style>
